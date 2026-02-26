@@ -1,4 +1,4 @@
-const SCRIPT_URL = "URL_DE_TU_IMPLEMENTACION_APPS_SCRIPT_AQUI";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqYVG5Vwtsj1A5dZjaATXPHDBtGJJ7WFrZP0LwWHfbfXELA3_bae63bkG3zANdWfUI2A/exec";
 
 async function handleFile(input, index, docName) {
     const file = input.files[0];
@@ -39,4 +39,5 @@ async function handleFile(input, index, docName) {
             console.error(e);
         }
     };
+
 }
