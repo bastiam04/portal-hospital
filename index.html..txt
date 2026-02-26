@@ -1,0 +1,42 @@
+const SCRIPT_URL = "URL_DE_TU_IMPLEMENTACION_APPS_SCRIPT_AQUI";
+
+async function handleFile(input, index, docName) {
+    const file = input.files[0];
+    if (!file || file.type !== "application/pdf") {
+        alert("Solo se permiten archivos PDF");
+        return;
+    }
+
+    const label = document.getElementById(`label-${index}`);
+    const item = document.getElementById(`item-${index}`);
+
+    label.innerHTML = `<span style="color:var(--md-primary)">⏳ Subiendo archivo...</span>`;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+        const payload = {
+            nombreContratista: usuarioActual.nombre,
+            perfil: usuarioActual.perfil,
+            carpetaDestino: docName, // Nombre de la carpeta (ej: Cédula)
+            archivoBase64: reader.result.split(',')[1],
+            nombreArchivo: `${docName}_${usuarioActual.nombre}.pdf`
+        };
+
+        try {
+            // Enviamos a Google Apps Script
+            const response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            });
+            
+            label.innerHTML = `<span style="color:var(--md-success)">✅ ${file.name} cargado correctamente</span>`;
+            item.classList.add('status-success');
+            actualizarProgreso();
+            
+        } catch (e) {
+            label.innerHTML = `<span style="color:var(--md-error)">❌ Error al subir. Reintente.</span>`;
+            console.error(e);
+        }
+    };
+}
